@@ -1,0 +1,9 @@
+cms_add_binary(edmBranchStorageSize
+                SOURCES
+                  storageSizeForBranch.cc
+                PUBLIC
+                  FWCore/FWLite
+                  boost_program_options
+                  boost
+                  rootcore
+                )

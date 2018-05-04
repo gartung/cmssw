@@ -1,0 +1,10 @@
+cms_add_binary(edmPluginHelp
+                SOURCES
+                  edmPluginHelp.cpp
+                PUBLIC
+                  FWCore/ParameterSet
+                  boost
+                  FWCore/Utilities
+                  FWCore/PluginManager
+                  boost_program_options
+                )

@@ -40,7 +40,7 @@ public:
  private:
 
   /// dummy data member to make derived classes perstistable
-  bool dummy_;
+  //bool dummy_;
 
 
 };

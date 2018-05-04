@@ -1,0 +1,13 @@
+cms_add_library(FireworksSimDataPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  SimDataFormats/TrackingAnalysis
+                  SimDataFormats/Vertex
+                  SimDataFormats/CaloHit
+                  SimDataFormats/TrackingHit
+                  SimDataFormats/Track
+                  Fireworks/Core
+                  Eve
+                  EG
+                )

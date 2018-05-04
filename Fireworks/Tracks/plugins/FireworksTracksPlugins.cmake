@@ -1,0 +1,24 @@
+cms_add_library(FireworksTracksPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  rootphysics
+                  rootinteractive
+                  Fireworks/Calo
+                  Fireworks/Tracks
+                  Fireworks/Core
+                  DataFormats/GeometrySurface
+                  DataFormats/TrackingRecHit
+                  DataFormats/TrackReco
+                  DataFormats/SiStripDigi
+                  DataFormats/SiStripCluster
+                  DataFormats/SiPixelDigi
+                  DataFormats/SiPixelCluster
+                  DataFormats/Scalers
+                  DataFormats/DetId
+                  DataFormats/Common
+                  DataFormats/BeamSpot
+                  Eve
+                  Geom
+                  RGL
+                )

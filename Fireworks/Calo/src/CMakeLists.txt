@@ -1,0 +1,21 @@
+cms_add_library(FireworksCalo
+                SOURCES
+                  *.cc *.cxx *.f *.f77
+                PUBLIC
+                  rootphysics
+                  rootgpad
+                  boost_system
+                  Fireworks/Tracks
+                  Fireworks/Core
+                  DataFormats/JetReco
+                  DataFormats/FWLite
+                  DataFormats/EgammaReco
+                  DataFormats/EcalRecHit
+                  DataFormats/ForwardDetId
+                  DataFormats/EcalDetId
+                  DataFormats/DetId
+                  DataFormats/CaloTowers
+                  DataFormats/CaloRecHit
+                  Eve
+                  Geom
+                )

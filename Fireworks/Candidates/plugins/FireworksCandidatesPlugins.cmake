@@ -1,0 +1,10 @@
+cms_add_library(FireworksCandidatesPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  Fireworks/Core
+                  Fireworks/Candidates
+                  DataFormats/Candidate
+                  Eve
+                  RGL
+                )

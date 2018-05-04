@@ -155,7 +155,8 @@
   <class name="edm::Wrapper<std::vector<l1extra::L1ParticleMap> >"/>
   <class name="edm::Wrapper<std::vector<l1extra::L1HFRings> >"/>
 
-  <class name="HOTPDigiTwinMux" ClassVersion="14">
+  <class name="HOTPDigiTwinMux" ClassVersion="15">
+   <version ClassVersion="15" checksum="2174527813"/>
     <version ClassVersion="14" checksum="66417560"/>
   </class>
   <class name="std::vector<HOTPDigiTwinMux>"/>

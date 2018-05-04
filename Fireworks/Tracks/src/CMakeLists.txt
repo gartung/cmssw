@@ -1,0 +1,21 @@
+cms_add_library(FireworksTracks
+                SOURCES
+                  *.cc *.cxx *.f *.f77
+                PUBLIC
+                  rootphysics
+                  rootmath
+                  Fireworks/Core
+                  DataFormats/TrackingRecHit
+                  DataFormats/TrackerRecHit2D
+                  DataFormats/TrackReco
+                  DataFormats/SiStripDetId
+                  DataFormats/SiStripCluster
+                  DataFormats/SiPixelDetId
+                  DataFormats/SiPixelCluster
+                  DataFormats/MuonDetId
+                  DataFormats/HcalDetId
+                  DataFormats/GsfTrackReco
+                  DataFormats/EcalDetId
+                  DataFormats/CaloTowers
+                  Eve
+                )

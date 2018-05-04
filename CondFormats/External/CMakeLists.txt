@@ -1,0 +1,3 @@
+  cms_add_interface(CondFormatsExternal INTERFACE rootmath clhep DataFormats/Provenance DataFormats/L1GlobalTrigger DataFormats/EcalDetId DataFormats/DetId boost_serialization boost)
+get_filename_component(CMS_PACKAGE_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+process_subdirs(test )

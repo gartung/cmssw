@@ -1,0 +1,14 @@
+cms_add_library(FireworksVerticesPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  roothistmatrix
+                  Fireworks/Candidates
+                  Fireworks/Vertices
+                  Fireworks/Core
+                  DataFormats/VertexReco
+                  DataFormats/BTauReco
+                  Eve
+                  Geom
+                  Core
+                )

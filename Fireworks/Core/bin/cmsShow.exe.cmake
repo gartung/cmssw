@@ -1,0 +1,9 @@
+cms_add_binary(cmsShow.exe
+                SOURCES
+                  cmsShow.cc
+                PUBLIC
+                  rootinteractive
+                  Fireworks/Core
+                  FWCore/MessageLogger
+                  Eve
+                )

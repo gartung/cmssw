@@ -1,0 +1,24 @@
+cms_add_library(FireworksMuonsPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  rootinteractive
+                  Fireworks/Muons
+                  Fireworks/Core
+                  Fireworks/Candidates
+                  Fireworks/Calo
+                  DataFormats/TrackReco
+                  DataFormats/RPCRecHit
+                  DataFormats/MuonReco
+                  DataFormats/MuonDetId
+                  DataFormats/DTRecHit
+                  DataFormats/GEMDigi
+                  DataFormats/GEMRecHit
+                  DataFormats/RPCDigi
+                  DataFormats/DTDigi
+                  DataFormats/CSCRecHit
+                  DataFormats/CSCDigi
+                  Eve
+                  Geom
+                  RGL
+                )

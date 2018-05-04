@@ -1,0 +1,13 @@
+cms_add_library(CommonToolsUtilsAuto
+                SOURCES
+                  *.cc
+                PUBLIC
+                  roottmva
+                  root
+                  CommonTools/Utils
+                  CondFormats/EgammaObjects
+                  CondCore/DBOutputService
+                  FWCore/ParameterSet
+                  FWCore/PluginManager
+                  FWCore/Framework
+                )

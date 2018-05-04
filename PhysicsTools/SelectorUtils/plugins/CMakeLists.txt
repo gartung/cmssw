@@ -1,0 +1,14 @@
+cms_add_library(PhysicsToolsSelectorUtils_plugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  FWCore/Utilities
+                  FWCore/ParameterSet
+                  FWCore/MessageLogger
+                  FWCore/Framework
+                  DataFormats/TrackReco
+                  DataFormats/TauReco
+                  DataFormats/Candidate
+                  CommonTools/Utils
+                  PhysicsTools/SelectorUtils
+                )

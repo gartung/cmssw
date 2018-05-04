@@ -1,0 +1,9 @@
+cms_add_binary(edmClassStorageSize
+                SOURCES
+                  storageSize.cc
+                PUBLIC
+                  FWCore/FWLite
+                  boost_program_options
+                  boost
+                  rootcore
+                )

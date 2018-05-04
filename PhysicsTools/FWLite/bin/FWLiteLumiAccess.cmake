@@ -1,0 +1,15 @@
+cms_add_binary(FWLiteLumiAccess
+                SOURCES
+                  FWLiteLumiAccess.cc
+                PUBLIC
+                  PhysicsTools/SelectorUtils
+                  PhysicsTools/Utilities
+                  PhysicsTools/FWLite
+                  CommonTools/Utils
+                  FWCore/PythonParameterSet
+                  DataFormats/Luminosity
+                  DataFormats/FWLite
+                  FWCore/FWLite
+                  boost
+                  root
+                )

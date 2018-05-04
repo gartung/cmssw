@@ -29,7 +29,7 @@ import subprocess
 
 import clang.cindex
 
-clang_version = None
+clang_version = (4,0,1)
 
 headers_template = '''
 #include "{headers}"
@@ -440,13 +440,13 @@ class SerializationCodeGenerator(object):
         if len(self.split_path) < 3:
             raise Exception('This script requires to be run inside a CMSSW package (usually within CondFormats), e.g. CondFormats/Alignment. The current path is: %s' % self.split_path)
 
-        if self.split_path[0] != 'src':
+        if self.split_path[-3] != 'src':
             raise Exception('The first folder should be src.')
 
-        if self.split_path[1] != 'CondFormats':
+        if self.split_path[-2] != 'CondFormats':
             raise Exception('The second folder should be CondFormats.')
 
-        product_name = '%s%s' % (self.split_path[1], self.split_path[2])
+        product_name = '%s%s' % (self.split_path[-2], self.split_path[-1])
         logging.debug('product_name = %s', product_name)
 
 	if not scramFlags:
@@ -475,7 +475,7 @@ class SerializationCodeGenerator(object):
         # On macOS we need to costruct library search path
         if "SCRAM_ARCH" in os.environ and re.match('osx10*',os.environ['SCRAM_ARCH']):
             cindex=clang.cindex
-            libpath=os.path.dirname(os.path.realpath(clang.cindex.__file__))+"/../../lib"
+            libpath=os.path.dirname(os.path.realpath(clang.cindex.__file__))+"/../../.."
             cindex.Config.set_library_path(libpath)
             index = cindex.Index.create()
         else :

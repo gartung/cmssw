@@ -1,0 +1,17 @@
+cms_add_binary(calculateIdMD5
+                SOURCES
+                  calculateIdMD5.cc
+                PUBLIC
+                  PhysicsTools/SelectorUtils
+                  PhysicsTools/FWLite
+                  PhysicsTools/Utilities
+                  CommonTools/Utils
+                  boost_python
+                  boost
+                  root
+                  FWCore/PythonParameterSet
+                  FWCore/ParameterSet
+                  FWCore/FWLite
+                  DataFormats/FWLite
+                  DataFormats/PatCandidates
+                )

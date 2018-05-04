@@ -1,0 +1,11 @@
+cms_add_library(FireworksGenParticlePlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  rootcore
+                  Fireworks/Core
+                  Fireworks/Candidates
+                  DataFormats/HepMCCandidate
+                  EG
+                  Eve
+                )

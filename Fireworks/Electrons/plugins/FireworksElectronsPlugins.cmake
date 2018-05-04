@@ -1,0 +1,18 @@
+cms_add_library(FireworksElectronsPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  rootphysics
+                  rootinteractive
+                  Fireworks/Tracks
+                  Fireworks/Electrons
+                  Fireworks/Core
+                  Fireworks/Candidates
+                  Fireworks/Calo
+                  DataFormats/GsfTrackReco
+                  DataFormats/EgammaReco
+                  DataFormats/EgammaCandidates
+                  DataFormats/EcalDetId
+                  Eve
+                  RGL
+                )

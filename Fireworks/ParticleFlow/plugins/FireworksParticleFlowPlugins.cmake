@@ -1,0 +1,14 @@
+cms_add_library(FireworksParticleFlowPlugins
+                SOURCES
+                  *.cc
+                PUBLIC
+                  Fireworks/ParticleFlow
+                  DataFormats/TrackReco
+                  DataFormats/PatCandidates
+                  DataFormats/ParticleFlowReco
+                  DataFormats/ParticleFlowCandidate
+                  DataFormats/JetReco
+                  DataFormats/EcalRecHit
+                  Eve
+                  RGL
+                )

@@ -1,0 +1,1 @@
+  cms_add_interface(CondFormatsExternal INTERFACE rootmath clhep DataFormats/Provenance DataFormats/L1GlobalTrigger DataFormats/EcalDetId DataFormats/DetId boost_serialization boost)
