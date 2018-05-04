@@ -1,0 +1,18 @@
+cms_add_binary(cmsRunVDT
+                SOURCES
+                  cmsRun.cpp
+                PUBLIC
+                  FWCore/PythonParameterSet
+                  FWCore/ParameterSet
+                  FWCore/Utilities
+                  FWCore/ServiceRegistry
+                  FWCore/PluginManager
+                  FWCore/MessageLogger
+                  FWCore/Framework
+                  jemalloc
+                  boost_python
+                  boost_program_options
+                  boost
+                  tbb
+                  vdt
+                )

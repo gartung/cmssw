@@ -63,9 +63,9 @@ int main(int argc, char* argv[])
 
       /* This is rather ugly but seems needed */
 #if __WORDSIZE == 64
-      printf ( "%lx %ld %s\n", adlerCksum, fileSize, argv[fileNum] );
+//      printf ( "%lx %ld %s\n", adlerCksum, fileSize, argv[fileNum] );
 #else
-      printf ( "%lx %lld %s\n", adlerCksum, fileSize, argv[fileNum] );
+//      printf ( "%lx %lld %s\n", adlerCksum, fileSize, argv[fileNum] );
 #endif
     }
 

@@ -80,7 +80,7 @@ namespace edm {
       bool postCalled = false;
       std::shared_ptr<TriggerResultInserter> returnValue;
       try {
-        maker::ModuleHolderT<TriggerResultInserter> holder(std::make_shared<TriggerResultInserter>(*trig_pset, iPrealloc.numberOfStreams()),static_cast<Maker const*>(nullptr));
+          maker::ModuleHolderT<TriggerResultInserter> holder(std::shared_ptr<TriggerResultInserter>(new TriggerResultInserter(*trig_pset, iPrealloc.numberOfStreams())),static_cast<Maker const*>(nullptr));
         holder.setModuleDescription(md);
         holder.registerProductsAndCallbacks(&preg);
         returnValue =holder.module();
@@ -131,8 +131,8 @@ namespace edm {
         bool postCalled = false;
 
         try {
-          maker::ModuleHolderT<T> holder(std::make_shared<T>(iPrealloc.numberOfStreams()),
-                                         static_cast<Maker const*>(nullptr));
+          maker::ModuleHolderT<T> holder(std::shared_ptr<T>(new T(iPrealloc.numberOfStreams())),
+                                           static_cast<Maker const*>(nullptr));
           holder.setModuleDescription(md);
           holder.registerProductsAndCallbacks(&preg);
           pathStatusInserters.emplace_back(holder.module());
