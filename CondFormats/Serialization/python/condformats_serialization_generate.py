@@ -29,7 +29,7 @@ import subprocess
 
 import clang.cindex
 
-clang_version = None
+clang_version = (6,0,1)
 
 headers_template = '''
 #include "{headers}"
@@ -420,7 +420,7 @@ class SerializationCodeGenerator(object):
 
     def __init__(self, scramFlags=None):
 
-        self.cmssw_base = os.getenv('CMSSW_BASE')
+        self.cmssw_base = os.path.realpath(os.getenv('CMSSW_BASE'))
         if self.cmssw_base is None:
             raise Exception('CMSSW_BASE is not set.')
         logging.debug('cmssw_base = %s', self.cmssw_base)
@@ -475,7 +475,7 @@ class SerializationCodeGenerator(object):
         # On macOS we need to costruct library search path
         if "SCRAM_ARCH" in os.environ and re.match('osx10*',os.environ['SCRAM_ARCH']):
             cindex=clang.cindex
-            libpath=os.path.dirname(os.path.realpath(clang.cindex.__file__))+"/../../lib"
+            libpath=os.path.dirname(os.path.realpath(clang.cindex.__file__))+"/../../../../lib"
             cindex.Config.set_library_path(libpath)
             index = cindex.Index.create()
         else :
@@ -493,7 +493,8 @@ class SerializationCodeGenerator(object):
 
             # Ignore some known warnings
             if diagnostic['spelling'].startswith('argument unused during compilation') \
-                or diagnostic['spelling'].startswith('unknown warning option'):
+                or diagnostic['spelling'].startswith('unknown warning option') \
+                or diagnostic['spelling'].startswith('unknown attribute'):
                 logf = logging.debug
 
             logf('Diagnostic: [%s] %s', get_severity_name(diagnostic['severity']), diagnostic['spelling'])
