@@ -27,7 +27,7 @@ class LHEEventProduct {
 	LHEEventProduct(LHEEventProduct&& other) {
 	  hepeup_ = std::move(other.hepeup_);
 	  comments_ = std::move(other.comments_);
-	  pdf_ = other.pdf_; // auto_ptr, so copy is actually a move
+	  pdf_ = std::move(other.pdf_); // unique_ptr, so copy must be a move
 	  weights_ = std::move(other.weights_);
 	  originalXWGTUP_ = std::move(other.originalXWGTUP_);
 	  scales_ = std::move(other.scales_);
@@ -37,7 +37,7 @@ class LHEEventProduct {
 	LHEEventProduct& operator=(LHEEventProduct&& other) {
 	  hepeup_ = std::move(other.hepeup_);
 	  comments_ = std::move(other.comments_);
-	  pdf_ = other.pdf_; // auto_ptr, so copy is actually a move
+	  pdf_ = std::move(other.pdf_); //unique_ptr, so copy must be a move
 	  weights_ = std::move(other.weights_);
 	  originalXWGTUP_ = std::move(other.originalXWGTUP_);
 	  scales_ = std::move(other.scales_);
@@ -119,7 +119,7 @@ class LHEEventProduct {
     private:
 	lhef::HEPEUP			hepeup_;
 	std::vector<std::string>	comments_;
-	std::auto_ptr<PDF>		pdf_;
+	std::unique_ptr<PDF>		pdf_;
 	std::vector<WGT>                weights_;
 	double                          originalXWGTUP_;
         std::vector<float>              scales_; //scale value used to exclude EWK-produced partons from matching
