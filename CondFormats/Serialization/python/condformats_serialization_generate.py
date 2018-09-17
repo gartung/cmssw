@@ -29,7 +29,9 @@ import subprocess
 
 import clang.cindex
 
-clang_version = (6,0,1)
+clang_version = None
+if "SCRAM_ARCH" in os.environ and re.match('osx.*',os.environ['SCRAM_ARCH']) :
+    clang_version = (6,0,1)
 
 headers_template = '''
 #include "{headers}"
