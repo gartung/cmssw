@@ -81,7 +81,7 @@ namespace edm {
       bool postCalled = false;
       std::shared_ptr<TriggerResultInserter> returnValue;
       try {
-        maker::ModuleHolderT<TriggerResultInserter> holder(std::make_shared<TriggerResultInserter>(*trig_pset, iPrealloc.numberOfStreams()),static_cast<Maker const*>(nullptr));
+        maker::ModuleHolderT<TriggerResultInserter> holder(std::shared_ptr<TriggerResultInserter>(new TriggerResultInserter(*trig_pset, iPrealloc.numberOfStreams())),static_cast<Maker const*>(nullptr));
         holder.setModuleDescription(md);
         holder.registerProductsAndCallbacks(&preg);
         returnValue =holder.module();
@@ -132,7 +132,7 @@ namespace edm {
         bool postCalled = false;
 
         try {
-          maker::ModuleHolderT<T> holder(std::make_shared<T>(iPrealloc.numberOfStreams()),
+          maker::ModuleHolderT<T> holder(std::shared_ptr<T>(new T(iPrealloc.numberOfStreams())),
                                          static_cast<Maker const*>(nullptr));
           holder.setModuleDescription(md);
           holder.registerProductsAndCallbacks(&preg);
@@ -473,7 +473,7 @@ namespace edm {
     assert(0<prealloc.numberOfStreams());
     streamSchedules_.reserve(prealloc.numberOfStreams());
     for(unsigned int i=0; i<prealloc.numberOfStreams();++i) {
-      streamSchedules_.emplace_back(std::make_shared<StreamSchedule>(
+      streamSchedules_.emplace_back(std::shared_ptr<StreamSchedule>( new StreamSchedule(
         resultsInserter(),
         pathStatusInserters_,
         endPathStatusInserters_,
@@ -483,7 +483,7 @@ namespace edm {
         areg,processConfiguration,
         !hasSubprocesses,
         StreamID{i},
-        processContext));
+        processContext)));
     }
 
     //TriggerResults are injected automatically by StreamSchedules and are
