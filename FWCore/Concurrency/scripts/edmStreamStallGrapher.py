@@ -348,13 +348,18 @@ def findStalledModules(processingSteps, numStreams):
 
 def createModuleTiming(processingSteps, numStreams):
     import json 
-    streamTime = [0]*numStreams
+    sourceState = [0]*numStreams
     streamState = [0]*numStreams
     moduleTimings = defaultdict(list)
     modulesActiveOnStream = [defaultdict(int) for x in xrange(numStreams)]
+    sourceTimings = defaultdict(list)
+    sourcesActiveOnStream = [defaultdict(int) for x in xrange(numStreams)]
+    sourceReadingModules = ['bmtfDigis', 'caloLayer1Digis', 'caloStage1Digis', 'caloStage2Digis', 'castorDigis', 'csctfDigis', 'ctppsDiamondRawToDigi', 'ctppsPixelDigis', 'dttfDigis', 'ecalDigis', 'ecalPreshowerDigis', 'emtfStage2Digis', 'gctDigis', 'gmtStage2Digis', 'gtDigis', 'gtStage2Digis', 'hcalDigis', 'muonCSCDigis', 'muonDTDigis', 'muonGEMDigis', 'muonRPCDigis', 'omtfStage2Digis', 'onlineMetaDataDigis', 'rpcCPPFRawToDigi', 'rpcTwinMuxRawToDigi', 'scalersRawToDigi', 'siPixelDigis', 'siStripDigis', 'tcdsDigis', 'totemRPRawToDigi', 'totemTimingRawToDigi', 'totemTriggerRawToDigi', 'twinMuxStage2Digis','CSCHaloData']
+
     for n,trans,s,time,isEvent in processingSteps:
         waitTime = None
         modulesOnStream = modulesActiveOnStream[s]
+        sourcesOnStream = sourcesActiveOnStream[s]
         if isEvent:
             if trans == kStarted:
                 streamState[s] = 1
@@ -363,7 +368,21 @@ def createModuleTiming(processingSteps, numStreams):
                 waitTime = time - modulesOnStream[n]
                 modulesOnStream.pop(n, None)
                 streamState[s] = 0
-                moduleTimings[n].append(float(waitTime/1000.))
+                moduleTimings[n].append(float(waitTime/1000000.))
+        if str(n) in sourceReadingModules:
+            if trans == kStartedSource or trans == kStartedSourceDelayedRead:
+                sourceState[s] = 1
+                sourcesOnStream[n]=time
+            elif trans == kFinishedSource or trans == kFinishedSourceDelayedRead:
+                waitTime = time - sourcesOnStream[n]
+                sourcesOnStream.pop(n, None)
+                sourceState[s] = 0
+                print(n)
+                if n == 'CSCHaloData':
+                    moduleTimings['TriggerResults/HLT'].append(float(waitTime/1000000.))
+                else:
+                    moduleTimings['rawDataCollector/HLT'].append(float(waitTime/1000000.))
+
 
     with open('module-timings.json', 'w') as outfile:
         outfile.write(json.dumps(moduleTimings, indent=4))
