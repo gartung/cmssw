@@ -305,13 +305,12 @@ class ModuleData(object):
             'activity': self.activity,
             'alloc': self.allocInfo
             }
-        data['record'] = {}
-        if callID is not None and transitionUseCallID(self.transition):
-            data['record']['callID'] = callID
-        if recordName is not None:
-            data['record']['name'] = recordName
-        if len(data['record']) == 0:
-            del data['record']
+        if callID is not None:
+            data['record'] = {}
+            if transitionUseCallID(self.transition):
+                data['record']['callID'] = callID
+            if recordName is not None:
+                data['record']['name'] = recordName
         return data
 
     def syncToSimpleDict(self):

@@ -138,7 +138,7 @@ def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTra
     for entry in moduleInfo:
         activity = entry.get("activity")
         # Check if the entry is for the "event" transition and has a "record" with a "callID"
-        if entry["transition"] == "event" and entry.get("record",None) is not None and entry["record"].get("callID",None) is not None and (entry["activity"] == "acquire" or entry["activity"] == "process"):
+        if entry["transition"] == "event" and "record" in entry and "callID" in entry["record"] and (entry["activity"] == "acquire" or entry["activity"] == "process"):
             if activity not in activityAllocations:
                 activityAllocations[activity] = dict()
             callID = entry["record"]["callID"]
@@ -146,13 +146,13 @@ def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTra
                 activityAllocations[activity][callID] = []
             activityAllocations[activity][callID].append(entry.get("alloc", {}))
     # Create separate entries for each activity
-    if len(activityAllocations) == 1 and "process" in activityAllocations.keys() and len(activityAllocations["process"]) == 1:
+    if activityAllocations.keys() == ["process"] and len(activityAllocations["process"]) == 1:
         return  # Only one activity and it's "process" and there is only one callID, so its not an ExternalWork module, skip creating separate entries
     for activity, callID_allocs in activityAllocations.items():
         if len(callID_allocs) == 1:
             for callID, allocs in callID_allocs.items():
                 # use the activity as the record name
-                recordName = f"{activity}"
+                recordName = activity
                 uniqueKey = UniqueKey(moduleLabel, moduleType, recordName, callID)
                 moduleTransition[uniqueKey] = {
                     "cpptype": moduleType,
@@ -362,12 +362,12 @@ def main(args):
             if transition == "event":
                 for moduleLabel, moduleInfo in doc["modules"].items():
                     # If any module has event transitions with acquire/process activity and a callID in record, treat it as ExternalWork or Process module
-                    if any(entry.get("transition") == "event" and \
-                        entry.get("record") is not None and \
-                        entry.get("record").get("name") is None and \
-                        entry["record"].get("callID") is not None and \
-                        (entry.get("activity") == "acquire" or \
-                        (entry.get("activity") == "process" and entry["record"].get("callID") is not None)) for entry in moduleInfo):
+                    if any(entry.["transition"] == "event" and \
+                        "record" in entry and \
+                        "name" not in entry["record"] and \
+                        "callID" in entry["record"] and \
+                        (entry["activity"] == "acquire" or \
+                        (entry["activity"] == "process" and "callID" entry["record"])) for entry in moduleInfo):
                         processExternalWorkTransition(moduleLabel, moduleTypes[moduleLabel], moduleInfo, moduleTransition)
         moduleTransitions[transition] = moduleTransition
 
