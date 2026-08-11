@@ -129,7 +129,7 @@ def processESModuleTransition(moduleLabel, moduleType, moduleInfo, moduleTransit
         }
 
 def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTransition):
-    """Process ExternalWork transitions - entries with acquire/process activity
+    """Process ExternalWork and Transformer transitions - entries with acquire/process activity
 
     Creates separate entries for each module+type+activity combination within the event transition.
     The recordName is set to 'callID:acquire' or 'callID:process' based on the activity.
@@ -142,9 +142,9 @@ def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTra
         if entry["transition"] == "event" and "record" in entry and "callID" in entry["record"] and (entry["activity"] == "acquire" or entry["activity"] == "process"):
             callID = entry["record"]["callID"]
             activityAllocations[activity][callID].append(entry.get("alloc", {}))
+
     # Create separate entries for each activity
     for activity, callID_allocs in activityAllocations.items():
- 
         for callID, allocs in callID_allocs.items():
             if len(callID_allocs) == 1:
                 # If there's only one callID for this activity, use the activity as the record name

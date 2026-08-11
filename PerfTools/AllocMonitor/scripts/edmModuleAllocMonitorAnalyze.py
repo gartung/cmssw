@@ -331,13 +331,12 @@ class ModuleData(object):
             'alloc': self.allocInfo.toSimpleDict()
             }
 
-        result['record'] = {}
-        if callID is not None and transitionUseCallID(self.transition) :
-            result['record']['callID'] = callID
-        if recordName is not None:
-            result['record']['name'] = recordName
-        if len(result['record']) == 0:
-            del result['record']
+        if callID is not None:
+            result['record'] = {}
+            if transitionUseCallID(self.transition) :
+                result['record']['callID'] = callID
+            if recordName is not None:
+                result['record']['name'] = recordName
         return result
 
 class ModuleInfo(object):
