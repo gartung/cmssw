@@ -143,8 +143,6 @@ def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTra
             callID = entry["record"]["callID"]
             activityAllocations[activity][callID].append(entry.get("alloc", {}))
     # Create separate entries for each activity
-    if activityAllocations.keys() == ["process"] and len(activityAllocations["process"]) == 1:
-        return  # Only one activity and it's "process" and there is only one callID, so its not an ExternalWork module, skip creating separate entries
     for activity, callID_allocs in activityAllocations.items():
  
         for callID, allocs in callID_allocs.items():
@@ -335,18 +333,27 @@ def main(args):
             processModuleTransition("source", moduleTypes["source"], doc["source"], transition, moduleTransition)
             # Regular transition processing
             for moduleLabel, moduleInfo in doc["modules"].items():
-                moduleType = moduleTypes[moduleLabel]
-                processModuleTransition(moduleLabel, moduleType, moduleInfo, transition, moduleTransition)
-            if transition == "event":
-                for moduleLabel, moduleInfo in doc["modules"].items():
-                    # If any module has event transitions with acquire/process activity and a callID in record, treat it as ExternalWork or Process module
-                    if any(entry["transition"] == "event" and \
-                        "record" in entry and \
-                        "name" not in entry["record"] and \
-                        "callID" in entry["record"] and \
-                        (entry["activity"] == "acquire" or \
-                        (entry["activity"] == "process" and "callID" in entry["record"])) for entry in moduleInfo):
-                        processExternalWorkTransition(moduleLabel, moduleTypes[moduleLabel], moduleInfo, moduleTransition)
+                eventCallIDs = {
+                    entry["record"]["callID"]
+                    for entry in moduleInfo
+                    if entry.get("transition") == "event" and
+                    "record" in entry and
+                    "name" not in entry["record"] and
+                    "callID" in entry["record"] and
+                    entry.get("activity") == "process"
+                }
+                hasAcquire = any(
+                    entry.get("transition") == "event" and
+                    "record" in entry and
+                    "name" not in entry["record"] and
+                    "callID" in entry["record"] and
+                    entry.get("activity") == "acquire"
+                    for entry in moduleInfo
+                )
+                if transition == "event" and (hasAcquire or len(eventCallIDs) > 1):
+                    processExternalWorkTransition(moduleLabel, moduleTypes[moduleLabel], moduleInfo, moduleTransition)
+                else:
+                    processModuleTransition(moduleLabel, moduleTypes[moduleLabel], moduleInfo, transition, moduleTransition)
         moduleTransitions[transition] = moduleTransition
 
 
