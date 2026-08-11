@@ -99,18 +99,13 @@ def processESModuleTransition(moduleLabel, moduleType, moduleInfo, moduleTransit
     Creates unique entries for each module+type+record combination.
     """
     # Group allocations by record name
-    recordAllocations = dict()
+    recordAllocations = collections.defaultdict(lambda: collections.defaultdict(list))
     for entry in moduleInfo:
         # EventSetup entries are those with a "record" field containing "name"
         if "record" in entry and "name" in entry["record"]:
-            activity = entry.get("activity", "process")
             # Get the callID from the record, defaulting to -1 if not present
             callid = entry["record"].get("callID", -1)
             recordName = entry["record"]["name"]
-            if recordName not in recordAllocations:
-                recordAllocations[recordName] = dict()
-            if callid not in recordAllocations[recordName].keys():
-                recordAllocations[recordName][callid] = []
             recordAllocations[recordName][callid].append(entry.get("alloc", {}))
 
     # Create separate entries for each record
@@ -128,6 +123,18 @@ def processESModuleTransition(moduleLabel, moduleType, moduleInfo, moduleTransit
                 "callID": callID
         }
 
+def isEventActivity(entry, activityTypes):
+    if isinstance(activityTypes, str):
+        activityTypes = [activityTypes]
+    return (
+        entry.get("transition") == "event"
+        and "record" in entry
+        and "name" not in entry["record"]
+        and "callID" in entry["record"]
+        and entry.get("activity") in activityTypes
+    )
+
+
 def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTransition):
     """Process ExternalWork and Transformer transitions - entries with acquire/process activity
 
@@ -138,8 +145,7 @@ def processExternalWorkTransition(moduleLabel, moduleType, moduleInfo, moduleTra
     activityAllocations = collections.defaultdict(lambda : collections.defaultdict(list))
     for entry in moduleInfo:
         activity = entry.get("activity")
-        # Check if the entry is for the "event" transition and has a "record" with a "callID"
-        if entry["transition"] == "event" and "record" in entry and "callID" in entry["record"] and (entry["activity"] == "acquire" or entry["activity"] == "process"):
+        if isEventActivity(entry, ["acquire", "process"]):
             callID = entry["record"]["callID"]
             activityAllocations[activity][callID].append(entry.get("alloc", {}))
 
@@ -291,8 +297,6 @@ def formatToCircles(moduleTransitions):
         # Use the fields from the UniqueKey namedtuple
         eventKey = UniqueKey(moduleLabel, key.moduleType, key.recordName, key.callID)
         eventCount = moduleTransitions['event'].get(eventKey, {}).get("nTransitions", -1)
-        moduleTypeVal = key.moduleType
-        recordName = key.recordName
 
         # Set events to 1 if it's 0 to prevent NaNs in Circles visualization
         module["transitions"] = max(eventCount, 1)
@@ -336,20 +340,9 @@ def main(args):
                 eventCallIDs = {
                     entry["record"]["callID"]
                     for entry in moduleInfo
-                    if entry.get("transition") == "event" and
-                    "record" in entry and
-                    "name" not in entry["record"] and
-                    "callID" in entry["record"] and
-                    entry.get("activity") == "process"
+                    if isEventActivity(entry, "process")
                 }
-                hasAcquire = any(
-                    entry.get("transition") == "event" and
-                    "record" in entry and
-                    "name" not in entry["record"] and
-                    "callID" in entry["record"] and
-                    entry.get("activity") == "acquire"
-                    for entry in moduleInfo
-                )
+                hasAcquire = any(isEventActivity(entry, "acquire") for entry in moduleInfo)
                 if transition == "event" and (hasAcquire or len(eventCallIDs) > 1):
                     processExternalWorkTransition(moduleLabel, moduleTypes[moduleLabel], moduleInfo, moduleTransition)
                 else:
