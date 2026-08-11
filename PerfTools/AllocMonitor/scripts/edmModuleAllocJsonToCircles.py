@@ -324,7 +324,6 @@ def main(args):
 
     moduleTypes = doc['cpptypes']
     moduleTransitions = dict()
-    externalWorkModules = set()
 
     for transition in transitionTypes:
         moduleTransition = dict()
